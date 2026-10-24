@@ -16,9 +16,10 @@ __pycache__/
 venv/
 .venv/
 
-# Node / Legacy
+# Node / Legacy / Local Context
 node_modules/
 memoria_duck_analyzer.md
+CONTEXTO_ARQUITECTURA_FOREVER.md
 
 # IDE, Agent & OS
 .agents/
