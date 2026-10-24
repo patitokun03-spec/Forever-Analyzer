@@ -1,47 +1,44 @@
-# 🛠️ Setup Guide
+# Setup Guide
 
-This guide walks you through setting up **WoW Forever Log Analyzer** locally using its zero-dependency Python 3 + SQLite backend architecture.
+This guide explains how to set up and run Forever Analyzer locally using Python 3 and SQLite.
 
-## 📋 Prerequisites
+## Prerequisites
 
-1. **Python 3.10 or higher** - [Download here](https://www.python.org/downloads/)
-2. **Git** - [Download here](https://git-scm.com/)
+1. Python 3.10 or newer ([python.org](https://www.python.org/downloads/))
+2. Git ([git-scm.com](https://git-scm.com/))
+3. A Warcraft Logs account to generate API v2 client credentials ([warcraftlogs.com/api/clients](https://www.warcraftlogs.com/api/clients))
 
-## 🔑 Step 1: Get your WarcraftLogs API Keys
+## Step 1: Clone the Repository
 
-The application uses the official WarcraftLogs v2 GraphQL API.
+```bash
+git clone https://github.com/patitokun03-spec/Forever-Analyzer.git
+cd Forever-Analyzer
+```
 
-1. Go to the [WarcraftLogs API Console](https://www.warcraftlogs.com/api/clients) and log in.
-2. Under "Create a new Client", give your client a name (e.g., `WoW Forever Analyzer`).
-3. Copy your **Client ID** and **Client Secret**.
+## Step 2: Configure Environment Variables
 
-## 💻 Step 2: Clone and Initialize the Database
+Copy `.env.example` to `.env` in the project root:
 
-1. Clone the repository:
-   ```bash
-   git clone <YOUR_PRIVATE_REPO_URL>
-   cd FOREVER
-   ```
-2. Build the local SQLite database (`forever.sqlite`) from the clean SQL seed:
-   ```bash
-   python database/seed.py
-   ```
+```env
+WCL_CLIENT_ID=your_client_id_here
+WCL_CLIENT_SECRET=your_client_secret_here
+PORT=3000
+```
 
-## ⚙️ Step 3: Configure your API Keys
+If you want to test the application offline without API credentials, you can leave those fields empty and load the built-in `demo` report from the search bar.
 
-1. Copy `.env.example` to `.env` in the root directory.
-2. Add your WarcraftLogs credentials:
-   ```env
-   WCL_CLIENT_ID=paste_your_client_id_here
-   WCL_CLIENT_SECRET=paste_your_client_secret_here
-   PORT=3000
-   ```
+## Step 3: Initialize the SQLite Database
 
-## 🚀 Step 4: Run the Server
+Generate `forever.sqlite` from the schema and catalog dump (`database/seed_data.sql`):
 
-1. Start the backend server:
-   ```bash
-   python server.py
-   ```
-   *(On Windows, you can also double-click `INICIAR_APP.bat`)*
-2. Open `http://localhost:3000` in your browser.
+```bash
+python database/seed.py
+```
+
+## Step 4: Start the Server
+
+```bash
+python server.py
+```
+
+On Windows, you can also double-click `start_server.bat`. Once running, open `http://localhost:3000` in your browser.

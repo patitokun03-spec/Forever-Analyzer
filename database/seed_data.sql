@@ -1,7 +1,7 @@
 -- database/seed_data.sql
 -- Clean, self-contained SQLite dump for WoW Forever Log Analyzer
 -- Generated from official Wowhead Forever (https://www.wowhead.com/forever/) & Classic 1.12 catalogs
--- Zero TBC leftovers, zero invalid foreign keys, zero empty icons
+-- Complete relational catalog for Classic 1.12 and WoW Forever
 
 PRAGMA foreign_keys = OFF;
 BEGIN TRANSACTION;

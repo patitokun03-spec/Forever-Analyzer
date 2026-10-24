@@ -1762,13 +1762,13 @@ div.wowhead-tooltip .iconmedium {
     gap: 20px;
 }
 
-.loading-duck {
+.loading-emblem {
     font-size: 5rem;
-    animation: loadingDuckPulse 2s ease-in-out infinite;
+    animation: loadingEmblemPulse 2s ease-in-out infinite;
     filter: drop-shadow(0 0 20px rgba(244, 180, 0, 0.4));
 }
 
-@keyframes loadingDuckPulse {
+@keyframes loadingEmblemPulse {
     0%, 100% {
         transform: scale(1);
         filter: drop-shadow(0 0 20px rgba(244, 180, 0, 0.4));

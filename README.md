@@ -1,47 +1,68 @@
-# 🛡️ WoW Forever Log Analyzer
+# Forever Analyzer
 
-**High-performance combat log analyzer for World of Warcraft: Forever (Classic+ Level 60). Track consumables, cooldown timelines, rotational casts, raid-wide boss debuffs, interrupts, and gear enchants per player with a zero-dependency Python 3 + SQLite backend.**
+Combat log analyzer for World of Warcraft Classic (1.12) and WoW Forever (Classic+). It connects to the Warcraft Logs v2 GraphQL API and provides an interface to inspect raid consumables, buff uptimes, cooldown timelines, interrupts, dispels, deaths, and player equipment.
 
----
+## Features
 
-## 📚 Documentation
+- Consumable and pre-buff tracking (flasks, battle/guardian elixirs, potions, healthstones, runes, weapon buffs, engineering items).
+- Class and spec ability tracking, including custom WoW Forever spells and tier set bonuses.
+- Boss debuff and raid buff uptime timelines.
+- Interrupt, dispel, and resurrection breakdown per fight or across an entire raid report.
+- Gear and enchant inspector based on `CombatantInfo` events.
+- Local SQLite database (`forever.sqlite`) for game catalog data and report caching, served by a lightweight Python HTTP server with no external dependencies.
 
-- **[Logical Architecture & Modules](docs/LOGICAL_ARCHITECTURE_AND_MODULES.md)** — Authoritative technical specification
-- **[Arquitectura y Contexto (ES)](CONTEXTO_ARQUITECTURA_FOREVER.md)** — Memoria técnica en español
-- **[English Docs](docs/en/README.md)** | **[Setup Guide](docs/en/SETUP.md)**
-- **[Documentación en Español](docs/es/README.md)** | **[Guía de Instalación](docs/es/SETUP.md)**
-- **[Changelog](CHANGELOG.md)** — Version history
+## Requirements
 
----
+- Python 3.10 or newer
+- Warcraft Logs API v2 client credentials (`Client ID` and `Client Secret` from [warcraftlogs.com/api/clients](https://www.warcraftlogs.com/api/clients))
 
-## ✨ Key Features
+## Setup
 
-- 📊 **Detailed Log Analysis:** Extracts combat events from Warcraft Logs v2 GraphQL API with local SQLite caching (`forever.sqlite`).
-- ⚡ **Zero-Dependency Native Backend:** Standard library Python 3 HTTP server (`server.py`) with native `sqlite3` catalog & cache.
-- 🎯 **Consumables & Buffs Compliance:** Audits Flasks, Battle/Guardian Elixirs, Food buffs, Weapon Oils/Stones, Potions, Healthstones, and Engineering explosives.
-- ⏱️ **Isolated Fight Timelines:** Gantt chart of personal cooldowns, active trinket procs, and external cooldowns (`Innervate`, `Power Infusion`, `Blessing of Protection`, `Bloodlust`).
-- 🛡️ **Casts & Raid Support Uptime:** Rotational cast counter with low-rank detection, per-target debuff uptimes, and raid-wide boss debuff / party buff tracking.
-- 🔍 **Gear Inspector:** 16-slot equipment inspector with 3-tier enchant validation.
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/patitokun03-spec/Forever-Analyzer.git
+   cd Forever-Analyzer
+   ```
 
----
+2. Copy `.env.example` to `.env` and add your Warcraft Logs API credentials:
+   ```env
+   WCL_CLIENT_ID=your_client_id_here
+   WCL_CLIENT_SECRET=your_client_secret_here
+   PORT=3000
+   ```
 
-## 🚀 Quick Start
-
-1. Clone this repository.
-2. Initialize the local SQLite database from the SQL seed:
+3. Initialize the local SQLite database from `database/seed_data.sql`:
    ```bash
    python database/seed.py
    ```
-3. Copy `.env.example` to `.env` and add your Warcraft Logs v2 API credentials (`WCL_CLIENT_ID` and `WCL_CLIENT_SECRET`).
-4. Start the server:
+
+4. Start the local server:
    ```bash
    python server.py
    ```
-   *(On Windows, you can also double-click `INICIAR_APP.bat`)*
-5. Open `http://localhost:3000` in your browser.
+   On Windows, you can also run `start_server.bat`.
 
----
+5. Open `http://localhost:3000` in your browser. If you want to test the interface without API credentials, enter `demo` in the report search bar.
 
-## 📝 License
+## Project Structure
 
-MIT License - See [LICENSE](LICENSE)
+```text
+Forever-Analyzer/
+├── server.py                # Local HTTP server and Warcraft Logs GraphQL v2 proxy
+├── start_server.bat         # Windows startup script
+├── database/
+│   ├── schema.sql           # SQLite relational schema
+│   ├── seed_data.sql        # Catalog dump (classes, specs, spells, items, enchants, raids)
+│   └── seed.py              # Script to build forever.sqlite from seed_data.sql
+├── public/
+│   ├── index.html           # Main single-page application
+│   ├── demo_log.json        # Sample raid report for offline testing
+│   ├── css/styles.css       # Stylesheet
+│   ├── js/                  # Frontend parser, trackers, and UI modules
+│   └── assets/icons/        # Cached spell and item icons
+└── docs/                    # Setup and architecture notes
+```
+
+## License
+
+MIT License. See [LICENSE](LICENSE) for details.

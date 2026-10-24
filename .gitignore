@@ -16,10 +16,13 @@ __pycache__/
 venv/
 .venv/
 
-# Node / Legacy / Local Context
+# Local Notes & Spanish Working Files
 node_modules/
-memoria_duck_analyzer.md
+memoria_*.md
 CONTEXTO_ARQUITECTURA_FOREVER.md
+INICIAR_APP.bat
+docs/es/
+docs/research_spells_consumibles.md
 
 # IDE, Agent & OS
 .agents/
@@ -27,4 +30,3 @@ CONTEXTO_ARQUITECTURA_FOREVER.md
 .idea/
 .DS_Store
 Thumbs.db
-

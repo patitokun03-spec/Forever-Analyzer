@@ -310,7 +310,7 @@ function generateFullComparison() {
     const actorB = (state.compareLogB.actors || []).find(a => a.name === pNameB);
 
     if (!actorA || !actorB) {
-        return '<p class="compare-error">No se encontró a uno de los jugadores seleccionados.</p>';
+        return '<p class="compare-error">One of the selected players could not be found.</p>';
     }
 
     const eventsA = extractFightEvents(state.currentEvents, state.currentReport, fIdA);

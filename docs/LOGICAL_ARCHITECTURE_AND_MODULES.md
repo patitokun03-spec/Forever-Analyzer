@@ -12,9 +12,9 @@
 **WoW Forever Log Analyzer** is a high-performance, browser-based combat log analyzer built specifically for **World of Warcraft: Forever** (Classic+ Level 60).
 
 ### Key Architectural Principles:
-1. **Vanilla Classic 60 Focused**:
-   - All spell IDs, talent calculations, abilities, consumables, and enchants reflect Classic+ Level 60.
-   - TBC/WotLK/Retail mechanics, spells, and hacks (e.g., TBC Mongoose, Drums of Battle, Bloodlust rotation hacks) are strictly excluded.
+1. **Classic 60 & Forever Focused**:
+   - All spell IDs, talent calculations, abilities, consumables, and enchants reflect Classic 1.12 and WoW Forever (Classic+ Level 60).
+   - Non-Classic expansion mechanics and spell ranks are excluded.
 2. **English-Only Catalog & Code**:
    - All code, comments, documentation, and database entries are strictly in **English**.
 3. **Zero-Build Native Architecture**:
@@ -156,9 +156,9 @@ The processor parses raw Warcraft Logs (WCL) event streams into structured playe
 - **Consumables & Buffs**: Grid of active consumables, world buffs, and raid buffs.
 - **Abilities Grid**: List of all abilities used, cast counts, damage, and interrupt statistics.
 - **Action Buttons**:
-  - `🔍 Inspect Gear`: Toggles `inlineGearContainer`.
-  - `⏱️ Timeline`: Toggles `inlineTimelineContainer` (available in encounter views).
-  - `🎯 Casts/Uptime`: Toggles `inlineCastsContainer` (available in encounter views and when cast/debuff data is present).
+  - `Inspect Gear`: Toggles `inlineGearContainer`.
+  - `Timeline`: Toggles `inlineTimelineContainer` (available in encounter views).
+  - `Casts/Uptime`: Toggles `inlineCastsContainer` (available in encounter views and when cast/debuff data is present).
 
 ### 4.4. Inspect Gear (`gearViewer.js`)
 - Renders 16 equipment slots in authentic WoW character pane layout.
@@ -172,7 +172,7 @@ The processor parses raw Warcraft Logs (WCL) event streams into structured playe
 - Includes a proportional time axis (0:00 to fight end).
 
 ### 4.6. Casts & Debuff Uptime Panel (`castsDebuffPanel.js`)
-- Contains sub-tab switching: `[ 🎯 Personal Uptime ]` and `[ 🛡️ Raid Support ]`.
+- Contains sub-tab switching: `[ Personal Uptime ]` and `[ Raid Support ]`.
 - **Personal Uptime**:
   - Section 1: Spammable rotational ability cast counts and low-rank warnings.
   - Section 2: Personal debuff / buff uptimes per target with target death lines and dead zone shading.
