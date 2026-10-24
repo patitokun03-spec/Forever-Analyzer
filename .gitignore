@@ -1,0 +1,29 @@
+# Environment & Secrets
+.env
+.env.*
+!.env.example
+
+# SQLite Databases & Local Backups
+*.sqlite
+*.sqlite3
+*.db
+database/backups/
+
+# Python Cache & Virtual Environments
+__pycache__/
+*.py[cod]
+*$py.class
+venv/
+.venv/
+
+# Node / Legacy
+node_modules/
+memoria_duck_analyzer.md
+
+# IDE, Agent & OS
+.agents/
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
