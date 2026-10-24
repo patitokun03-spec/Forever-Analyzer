@@ -2,10 +2,18 @@
 
 Combat log analyzer for World of Warcraft Classic (1.12) and WoW Forever (Classic+). It connects to the Warcraft Logs v2 GraphQL API and provides an interface to inspect raid consumables, buff uptimes, cooldown timelines, interrupts, dispels, deaths, and player equipment.
 
+## Project Status
+
+This project is built on top of my earlier [TBC Duck Analyzer](https://github.com/patitokun03-spec/TBC-Duck-Analyzer) and has been adapted to run on a local Python + SQLite stack for Classic 60 and WoW Forever.
+
+Please keep in mind that this version is still a work in progress:
+- Since it was migrated and reworked from the previous analyzer, you may still run into occasional bugs or edge cases during log parsing.
+- The project is not yet complete because a significant portion of WoW Forever's final game data (custom spells, talent changes, item IDs, and raid mechanics) is still undocumented or subject to change. As more information from the game becomes available, the database catalog and class trackers will be updated accordingly.
+
 ## Features
 
 - Consumable and pre-buff tracking (flasks, battle/guardian elixirs, potions, healthstones, runes, weapon buffs, engineering items).
-- Class and spec ability tracking, including custom WoW Forever spells and tier set bonuses.
+- Class and spec ability tracking, including known custom WoW Forever spells and tier set bonuses.
 - Boss debuff and raid buff uptime timelines.
 - Interrupt, dispel, and resurrection breakdown per fight or across an entire raid report.
 - Gear and enchant inspector based on `CombatantInfo` events.
