@@ -48,17 +48,17 @@ _token_cache = {
 }
 
 def get_wcl_filter_spell_ids():
-    """Queries abilities and consumables from SQLite to build a compact WCL filter expression."""
+    """Queries abilities and in-combat consumables from SQLite to build compact WCL filter chunks."""
     conn = get_db()
-    ability_rows = conn.execute('SELECT spell_id FROM abilities').fetchall()
-    consumable_rows = conn.execute('SELECT item_id as spell_id FROM items_consumables').fetchall()
+    ability_rows = conn.execute('SELECT spell_id FROM abilities WHERE tracking_enabled = 1').fetchall()
+    consumable_rows = conn.execute('SELECT item_id as spell_id FROM items_consumables WHERE is_in_combat = 1').fetchall()
     conn.close()
 
     ids = set()
     for r in ability_rows:
-        if r['spell_id']: ids.add(r['spell_id'])
+        if r['spell_id']: ids.add(int(r['spell_id']))
     for r in consumable_rows:
-        if r['spell_id']: ids.add(r['spell_id'])
+        if r['spell_id']: ids.add(int(r['spell_id']))
 
     # Special IDs for resurrections, explosives, and fixed combat mechanics (Classic 60 & Forever)
     special_ids = [
@@ -71,6 +71,8 @@ def get_wcl_filter_spell_ids():
         10646,  # Goblin Sapper Charge (Item)
         23063,  # Dense Dynamite
         19769,  # Thorium Grenade
+        19784,  # Dark Iron Bomb
+        19821,  # Arcane Bomb
         4054,   # Rough Dynamite
         4064,   # Rough Copper Bomb
         4068,   # Iron Grenade
@@ -84,11 +86,12 @@ def get_wcl_filter_spell_ids():
         17528,  # Mighty Rage Potion
         17531,  # Major Mana Potion
         17534,  # Major Healing Potion
+        17540,  # Greater Stoneshield Potion
     ]
     for s_id in special_ids:
         ids.add(s_id)
 
-    return ",".join(str(i) for i in ids)
+    return sorted(ids)
 
 def get_wcl_token(client_id, client_secret):
     """Obtains or returns cached OAuth2 access token for Warcraft Logs v2 API."""
@@ -229,7 +232,7 @@ class ForeverHandler(SimpleHTTPRequestHandler):
                     return
 
             # Check SQLite cache
-            cache_key = f'v2_{log_id}'
+            cache_key = f'v3_{log_id}'
             cached = self.get_cached_log(cache_key)
             if cached and not body.get('bypassCache'):
                 print(f"[Server] Cache HIT for {log_id}")
@@ -257,7 +260,23 @@ class ForeverHandler(SimpleHTTPRequestHandler):
                 token = get_wcl_token(wcl_id, wcl_secret)
                 all_filter_ids = get_wcl_filter_spell_ids()
 
-                filter_exp = f"type = 'death' OR type = 'combatantinfo' OR (type IN ('cast', 'damage', 'interrupt', 'resurrect', 'applybuff', 'applybuffstack', 'refreshbuff', 'removebuff', 'applydebuff', 'refreshdebuff', 'removedebuff') AND ability.id IN ({all_filter_ids}))"
+                # WCL GraphQL enforces a ~4,500 character limit per filterExpression.
+                # Split tracked spell IDs into compact chunks of <= 450 IDs each.
+                CHUNK_SIZE = 450
+                chunks = [all_filter_ids[i:i + CHUNK_SIZE] for i in range(0, len(all_filter_ids), CHUNK_SIZE)]
+                explosive_ids_str = "13241,13240,10646,23063,19769,19784,19821,4054,4064,4068"
+                explosive_filter = f"type = 'damage' AND ability.id IN ({explosive_ids_str})"
+
+                chunk_filters = {}
+                chunk_queries = []
+                for idx, ch in enumerate(chunks):
+                    alias = f"ev_{idx}"
+                    ch_str = ",".join(str(x) for x in ch)
+                    f_exp = f"type IN ('cast', 'interrupt', 'resurrect', 'applybuff', 'applybuffstack', 'refreshbuff', 'removebuff', 'applydebuff', 'refreshdebuff', 'removedebuff') AND ability.id IN ({ch_str})"
+                    chunk_filters[alias] = f_exp
+                    chunk_queries.append(f'{alias}: events(startTime: 0, endTime: 999999999999, filterExpression: "{f_exp}") {{ data nextPageTimestamp }}')
+
+                chunks_gql = "\n                            ".join(chunk_queries)
 
                 # Initial query
                 query = f"""
@@ -265,10 +284,12 @@ class ForeverHandler(SimpleHTTPRequestHandler):
                     reportData {{
                         report(code: "{log_id}") {{
                             title
-                            fights {{ id name startTime endTime kill difficulty }}
+                            fights {{ id encounterID name startTime endTime kill difficulty }}
                             masterData {{ actors {{ id name subType icon type }} }}
-                            events(startTime: 0, endTime: 999999999999, filterExpression: "{filter_exp}") {{ data nextPageTimestamp }}
+                            combatantInfo: events(startTime: 0, endTime: 999999999999, dataType: CombatantInfo) {{ data nextPageTimestamp }}
                             deaths: events(startTime: 0, endTime: 999999999999, dataType: Deaths) {{ data nextPageTimestamp }}
+                            explosives: events(startTime: 0, endTime: 999999999999, filterExpression: "{explosive_filter}") {{ data nextPageTimestamp }}
+                            {chunks_gql}
                         }}
                     }}
                 }}
@@ -279,37 +300,49 @@ class ForeverHandler(SimpleHTTPRequestHandler):
                 if not report:
                     raise Exception("Report not found or is private.")
 
-                if not report.get("events"): report["events"] = {"data": []}
-                if not report.get("deaths"): report["deaths"] = {"data": []}
+                merged_events = []
+                next_pages = {}
 
-                next_event = report["events"].get("nextPageTimestamp")
-                next_death = report["deaths"].get("nextPageTimestamp")
+                # Collect initial pages and track any aliases requiring pagination
+                stream_aliases = ["combatantInfo", "deaths", "explosives"] + list(chunk_filters.keys())
+                for alias in stream_aliases:
+                    block = report.pop(alias, None)
+                    if block and isinstance(block, dict):
+                        if block.get("data"):
+                            merged_events.extend(block["data"])
+                        if block.get("nextPageTimestamp") is not None:
+                            next_pages[alias] = block["nextPageTimestamp"]
 
-                # Handle pagination if report exceeds 10k events
-                while next_event is not None or next_death is not None:
-                    ev_str = f'events(startTime: {next_event}, endTime: 999999999999, killType: All, filterExpression: "{filter_exp}") {{ data nextPageTimestamp }}' if next_event is not None else ''
-                    death_str = f'deaths: events(startTime: {next_death}, endTime: 999999999999, killType: All, dataType: Deaths) {{ data nextPageTimestamp }}' if next_death is not None else ''
-                    page_query = f"""{{ reportData {{ report(code: "{log_id}") {{ {ev_str} {death_str} }} }} }}"""
+                # Paginate any stream that exceeded 10k events
+                while next_pages:
+                    page_parts = []
+                    for alias, next_ts in list(next_pages.items()):
+                        if alias == "combatantInfo":
+                            page_parts.append(f'combatantInfo: events(startTime: {next_ts}, endTime: 999999999999, dataType: CombatantInfo) {{ data nextPageTimestamp }}')
+                        elif alias == "deaths":
+                            page_parts.append(f'deaths: events(startTime: {next_ts}, endTime: 999999999999, dataType: Deaths) {{ data nextPageTimestamp }}')
+                        elif alias == "explosives":
+                            page_parts.append(f'explosives: events(startTime: {next_ts}, endTime: 999999999999, filterExpression: "{explosive_filter}") {{ data nextPageTimestamp }}')
+                        elif alias in chunk_filters:
+                            page_parts.append(f'{alias}: events(startTime: {next_ts}, endTime: 999999999999, filterExpression: "{chunk_filters[alias]}") {{ data nextPageTimestamp }}')
 
+                    page_query = f'{{ reportData {{ report(code: "{log_id}") {{ {" ".join(page_parts)} }} }} }}'
                     page_res = execute_wcl_graphql(token, page_query)
                     page_report = page_res.get("data", {}).get("reportData", {}).get("report", {})
 
-                    if next_event is not None and "events" in page_report and page_report["events"].get("data"):
-                        report["events"]["data"].extend(page_report["events"]["data"])
-                        next_event = page_report["events"].get("nextPageTimestamp")
-                    else:
-                        next_event = None
+                    for alias in list(next_pages.keys()):
+                        block = page_report.get(alias)
+                        if block and isinstance(block, dict) and block.get("data"):
+                            merged_events.extend(block["data"])
+                            if block.get("nextPageTimestamp") is not None:
+                                next_pages[alias] = block["nextPageTimestamp"]
+                            else:
+                                del next_pages[alias]
+                        else:
+                            del next_pages[alias]
 
-                    if next_death is not None and "deaths" in page_report and page_report["deaths"].get("data"):
-                        report["deaths"]["data"].extend(page_report["deaths"]["data"])
-                        next_death = page_report["deaths"].get("nextPageTimestamp")
-                    else:
-                        next_death = None
-
-                # Merge deaths into events data and sort by timestamp
-                if report.get("deaths") and report["deaths"].get("data"):
-                    report["events"]["data"].extend(report["deaths"]["data"])
-                report["events"]["data"].sort(key=lambda x: x.get("timestamp", 0))
+                merged_events.sort(key=lambda x: x.get("timestamp", 0))
+                report["events"] = {"data": merged_events}
 
                 # Store complete report in SQLite logs_cache
                 report_json_str = json.dumps(res_data)

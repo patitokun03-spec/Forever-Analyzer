@@ -22,6 +22,8 @@ def main():
     if os.path.exists(SEED_DATA_PATH):
         with open(SEED_DATA_PATH, 'r', encoding='utf-8') as f:
             sql = f.read()
+        if 'BEGIN TRANSACTION' not in sql[:500]:
+            sql = 'BEGIN TRANSACTION;\n' + sql + '\nCOMMIT;'
         cursor.executescript(sql)
         print(f'[Seed] Master seed executed successfully from {SEED_DATA_PATH}.')
     else:
