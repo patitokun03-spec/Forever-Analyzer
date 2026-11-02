@@ -260,6 +260,8 @@ export function processRaidDebuffsAndBuffs(fightEvents, fightInfo, allActors, ta
     const bossDebuffData = {};
     TRACKED_BOSS_DEBUFFS.forEach(d => {
         bossDebuffData[d.name] = {
+            name: d.name,
+            icon: d.icon,
             config: d,
             applied: false,
             count: 0,
@@ -276,6 +278,8 @@ export function processRaidDebuffsAndBuffs(fightEvents, fightInfo, allActors, ta
     const raidBuffData = {};
     TRACKED_RAID_BUFFS.forEach(b => {
         raidBuffData[b.name] = {
+            name: b.name,
+            icon: b.icon,
             config: b,
             applied: false,
             uptimePct: 0,
