@@ -41,12 +41,10 @@ export function generateTimelineHTML(playerName, fightId, events, fightInfo, isC
     
     const usedSpells = Object.keys(events).filter(sId => events[sId].length > 0);
     
-    // Sort alphabetically, but treat Heroism as Bloodlust so they align in comparisons
+    // Sort alphabetically by spell name
     usedSpells.sort((a, b) => {
-        let nameA = TIMELINE_SPELLS[a.split('-')[0]]?.name || '';
-        let nameB = TIMELINE_SPELLS[b.split('-')[0]]?.name || '';
-        if (nameA === 'Heroism') nameA = 'Bloodlust';
-        if (nameB === 'Heroism') nameB = 'Bloodlust';
+        const nameA = TIMELINE_SPELLS[a.split('-')[0]]?.name || '';
+        const nameB = TIMELINE_SPELLS[b.split('-')[0]]?.name || '';
         return nameA.localeCompare(nameB);
     });
     
@@ -65,32 +63,10 @@ export function generateTimelineHTML(playerName, fightId, events, fightInfo, isC
                     spellInfo.name = `Innervate (${targetOrSource})`;
                 } else if (baseSpellId === '10060') {
                     spellInfo.name = `Power Infusion (${targetOrSource})`;
-                } else if (baseSpellId === '1022') {
+                } else if (baseSpellId === '1022' || baseSpellId === '5599' || baseSpellId === '10278') {
                     spellInfo.name = `BoP (${targetOrSource})`;
                 } else {
                     spellInfo.name = `${spellInfo.name} (${targetOrSource})`;
-                }
-            }
-
-            if (baseSpellId == 33370) {
-                let hasScarab = false;
-                if (fightId === 'overall') {
-                    if (state.playerGearDB) {
-                        for (let fId in state.playerGearDB) {
-                            if (state.playerGearDB[fId][playerName] && state.playerGearDB[fId][playerName].some(g => g && g.id === 28190)) {
-                                hasScarab = true;
-                                break;
-                            }
-                        }
-                    }
-                } else {
-                    const gear = (state.playerGearDB && state.playerGearDB[fightId] && state.playerGearDB[fightId][playerName]) ? state.playerGearDB[fightId][playerName] : [];
-                    hasScarab = gear.some(g => g && g.id === 28190);
-                }
-
-                if (hasScarab) {
-                    spellInfo.name = "Fate's Decree (Scarab)";
-                    spellInfo.icon = "inv_misc_orb_03";
                 }
             }
 

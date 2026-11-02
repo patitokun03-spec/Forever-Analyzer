@@ -1,6 +1,6 @@
 import { state } from '../state.js';
 import { formatDuration } from '../utils.js';
-import { CLASSES, CLASS_COLORS, SPEC_ICONS, SPEC_ROLES, BUFF_DB, SPELL_DB, ENCHANT_DB, isTrinket, getSpellSortCategory } from '../gameData.js';
+import { SPEC_ICONS, BUFF_DB, SPELL_DB, ENCHANT_DB, isTrinket, getSpellSortCategory } from '../gameData.js';
 
 export function renderPlayerView(data, player, fightInfo) {
     const spec = data.spec;
@@ -92,7 +92,7 @@ export function renderPlayerView(data, player, fightInfo) {
             groupedSpells[name].damage += sData.damage;
         });
 
-    // Also include trinkets that only logged as an aura (like Abacus)
+    // Also include active trinkets that only logged as a buff aura
     Object.entries(data.timelineEvents || {})
         .filter(([spellId]) => BUFF_DB && BUFF_DB[spellId] && isTrinket && isTrinket(BUFF_DB[spellId].name))
         .forEach(([spellId, auraData]) => {
@@ -200,12 +200,7 @@ export function renderPlayerView(data, player, fightInfo) {
     }
 
     // === BOSS ICON ===
-    let bossSlug = (fightInfo && fightInfo.name) ? fightInfo.name.trim().replace(/'/g, '').replace(/[\s,-]+/g, '-').toLowerCase() : '';
-    // Removes trailing hyphens if any
-    bossSlug = bossSlug.replace(/-+$/, '');
-    
-    const cacheBuster = Date.now();
-    let bossIconHtml = isOverall ? '' : `<img src="/images/targets/t-${bossSlug}.png?v=${cacheBuster}" style="height: 40px; vertical-align: middle; margin-right: 12px; border-radius: 6px;" onerror="this.src='/assets/icons/inv_misc_questionmark.jpg'; this.onerror=null;">`;
+    let bossIconHtml = isOverall ? '' : `<img src="/api/icon/inv_misc_head_dragon_01.jpg" style="height: 40px; vertical-align: middle; margin-right: 12px; border-radius: 6px; border: 1px solid rgba(244, 180, 0, 0.35);" onerror="this.src='/assets/icons/inv_misc_questionmark.jpg'; this.onerror=null;">`;
 
     return `
         <div class="player-view">

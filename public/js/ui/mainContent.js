@@ -2,7 +2,6 @@
 // Main view orchestrator: renders Player View or Raid Summary depending on selection.
 
 import { state } from '../state.js';
-import { formatDuration } from '../utils.js';
 import { processPlayerData } from '../processor/index.js';
 import { fetchDps } from '../api.js';
 import { renderPlayerView } from './playerView.js';

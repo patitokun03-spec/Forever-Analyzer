@@ -17,10 +17,11 @@ export const state = {
     castsDebuffDB: {},
     allActors: [],
     openPanels: { gear: false, timeline: false, casts: false },
-    processedPlayerCache: {}, // In-memory cache for processed fight/player data
-    compareLogA: null, // { report, events, actors, logId, title }
-    compareLogB: null, // { report, events, actors, logId, title }
-    compareState: { active: false, fightA: null, playerA: null, fightB: null, playerB: null, diffMode: 'A-B' }
+    processedPlayerCache: {} // In-memory cache for processed fight/player data
+    // Inactive Compare View state (deactivated until Compare View UI is enabled)
+    // compareLogA: null, // { report, events, actors, logId, title }
+    // compareLogB: null, // { report, events, actors, logId, title }
+    // compareState: { active: false, fightA: null, playerA: null, fightB: null, playerB: null, diffMode: 'A-B' }
 };
 
 export function resetStateForAudit(logId) {
@@ -32,9 +33,9 @@ export function resetStateForAudit(logId) {
     state.castsDebuffDB = {};
     state.allActors = [];
     state.processedPlayerCache = {};
-    state.compareLogA = null;
-    state.compareLogB = null;
-    state.compareState = { active: false, fightA: null, playerA: null, fightB: null, playerB: null, diffMode: 'A-B' };
+    // state.compareLogA = null;
+    // state.compareLogB = null;
+    // state.compareState = { active: false, fightA: null, playerA: null, fightB: null, playerB: null, diffMode: 'A-B' };
 }
 
 export function resetStateForLanding() {
@@ -44,7 +45,7 @@ export function resetStateForLanding() {
     state.currentEvents = null;
     state.currentActors = null;
     state.processedPlayerCache = {};
-    state.compareLogA = null;
-    state.compareLogB = null;
-    state.compareState = { active: false, fightA: null, playerA: null, fightB: null, playerB: null, diffMode: 'A-B' };
+    // state.compareLogA = null;
+    // state.compareLogB = null;
+    // state.compareState = { active: false, fightA: null, playerA: null, fightB: null, playerB: null, diffMode: 'A-B' };
 }

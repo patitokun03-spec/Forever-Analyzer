@@ -18,6 +18,7 @@ venv/
 
 # Local Notes & Spanish Working Files
 node_modules/
+scratch/
 memoria_*.md
 CONTEXTO_ARQUITECTURA_FOREVER.md
 INICIAR_APP.bat

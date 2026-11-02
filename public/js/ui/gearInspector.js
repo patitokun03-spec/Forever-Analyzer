@@ -52,23 +52,6 @@ export function toggleGearInline(playerName, encounterId, className, specName) {
             let iconUrl = iconUrlStr ? `/api/icon/${iconUrlStr}.jpg` : '/api/icon/inv_misc_questionmark.jpg';
 
             let wowheadParams = `item=${item.id}&pcs=${allGearIds}`;
-            let gemsHtml = '';
-            let gemsTableHtml = '';
-            if (item.gems && item.gems.length > 0) {
-                let gemIdsStr = item.gems.map(g => g.id).join(':');
-                wowheadParams += `&gems=${gemIdsStr}`;
-
-                item.gems.forEach((g, gemIdx) => {
-                    let gemIconStr = g.icon ? g.icon.toLowerCase().replace(/\s+/g, '_').replace(/\.jpg$/i, '') : 'inv_misc_questionmark';
-                    let isMetaGem = (i === 0 && gemIdx === 0);
-                    let gemClass = isMetaGem ? 'paperdoll-gem-icon meta-gem' : 'paperdoll-gem-icon';
-                    let gemTableClass = isMetaGem ? 'socket-icon meta-gem' : 'socket-icon';
-                    let linkStyle = isMetaGem ? 'display:inline-block; line-height:0;' : 'display:inline-block; line-height:0; border-radius:50%;';
-                    let linkTableStyle = isMetaGem ? 'display:inline-block; line-height:0; margin:0 1px;' : 'display:inline-block; line-height:0; border-radius:50%; margin:0 1px;';
-                    gemsHtml += `<a href="https://www.wowhead.com/forever/item=${g.id}" onclick="event.preventDefault();" data-wowhead="item=${g.id}&domain=forever" data-wh-rename-link="false" data-wh-icon-size="none" style="${linkStyle}"><img class="${gemClass}" src="/api/icon/${gemIconStr}.jpg" onerror="this.style.display='none'"></a>`;
-                    gemsTableHtml += `<a href="https://www.wowhead.com/forever/item=${g.id}" onclick="event.preventDefault();" data-wowhead="item=${g.id}&domain=forever" data-wh-rename-link="false" data-wh-icon-size="none" style="${linkTableStyle}"><img class="${gemTableClass}" src="/api/icon/${gemIconStr}.jpg" onerror="this.style.display='none'"></a>`;
-                });
-            }
 
             let permEnchant = item.permanentEnchant || item.enchant;
             let rawEnchant = permEnchant;

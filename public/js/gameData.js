@@ -166,7 +166,7 @@ export const CLASS_ABILITY_TRACKING = {
             { ids: [1680], name: "Whirlwind" },
             { ids: [7386, 7405, 8380, 11596, 11597, 25225], name: "Sunder Armor" },
             { ids: [5308, 20658, 20660, 20661, 20662], name: "Execute" },
-            { ids: [1464, 8820, 11604, 11605], name: "Slam" },
+            { ids: [1464, 8820, 11604, 11605, 1240193], name: "Slam" },
             { ids: [1715, 7372, 7373], name: "Hamstring" },
         ],
         debuffs: [
@@ -184,7 +184,7 @@ export const CLASS_ABILITY_TRACKING = {
             { ids: [7384, 7887, 11584, 11585], name: "Overpower" },
             { ids: [7386, 7405, 8380, 11596, 11597, 25225], name: "Sunder Armor" },
             { ids: [5308, 20658, 20660, 20661, 20662], name: "Execute" },
-            { ids: [1464, 8820, 11604, 11605], name: "Slam" },
+            { ids: [1464, 8820, 11604, 11605, 1240193], name: "Slam" },
             { ids: [1715, 7372, 7373], name: "Hamstring" },
         ],
         debuffs: [
@@ -243,6 +243,7 @@ export const CLASS_ABILITY_TRACKING = {
     "Paladin-Retribution": {
         casts: [
             { ids: [679, 678, 1866, 1211818, 1211819, 1211820], name: "Holy Strike" },
+            { ids: [1279886], name: "Crusader Strike" },
             { ids: [20271], name: "Judgement" },
             { ids: [2657, 20116, 20922, 20923, 20924], name: "Consecration" },
             { ids: [879, 5614, 5615, 10312, 10313, 10314], name: "Exorcism" },
@@ -338,7 +339,8 @@ export const CLASS_ABILITY_TRACKING = {
         casts: [
             { ids: [15407, 17311, 17312, 17313, 17314, 18807], name: "Mind Flay" },
             { ids: [8092, 8102, 8103, 8104, 8105, 8106, 10945, 10946, 10947], name: "Mind Blast" },
-            { ids: [32379], name: "Shadow Word: Death" },
+            { ids: [1277324], name: "Dark Sacrifice" },
+            { ids: [1277331], name: "Chastise" },
         ],
         debuffs: [
             { ids: [589, 594, 970, 992, 2767, 10892, 10893, 10894], name: "Shadow Word: Pain", duration: 18000, color: "#8e44ad" },
@@ -366,10 +368,10 @@ export const CLASS_ABILITY_TRACKING = {
     },
     "Mage-Fire": {
         casts: [
-            { ids: [133, 143, 145, 3155, 8412, 8413, 10144, 10145, 10148, 10149, 10150, 10151, 25306], name: "Fireball" },
+            { ids: [133, 143, 145, 3140, 8400, 8401, 8402, 10148, 10149, 10150, 10151, 25306], name: "Fireball" },
             { ids: [2948, 8444, 8445, 8446, 10205, 10206, 10207], name: "Scorch" },
-            { ids: [2136, 2137, 2138, 8414, 10197, 10199, 10200], name: "Fire Blast" },
-            { ids: [11366, 12505, 12522, 12523, 12524, 12525, 12526, 12527], name: "Pyroblast" },
+            { ids: [2136, 2137, 2138, 8412, 8413, 10197, 10199], name: "Fire Blast" },
+            { ids: [11366, 12505, 12522, 12523, 12524, 12525, 12526, 18809], name: "Pyroblast" },
         ],
         debuffs: [
             { ids: [22959], name: "Improved Scorch", duration: 30000, color: "#e67e22" },
@@ -410,7 +412,7 @@ export const CLASS_ABILITY_TRACKING = {
             { ids: [980, 1014, 6215, 11711, 11712, 11713], name: "Curse of Agony", duration: 24000, color: "#d35400" },
             { ids: [1213158], name: "Unstable Affliction", duration: 18000, color: "#e67e22" },
             { ids: [1490, 11721, 11722], name: "Curse of the Elements", duration: 300000, color: "#9b59b6" },
-            { ids: [17937, 17938], name: "Curse of Shadow", duration: 300000, color: "#8e44ad" },
+            { ids: [17862, 17937], name: "Curse of Shadow", duration: 300000, color: "#8e44ad" },
             { ids: [704, 7658, 7659, 11717], name: "Curse of Recklessness", duration: 120000, color: "#e74c3c" },
         ]
     },
@@ -419,7 +421,7 @@ export const CLASS_ABILITY_TRACKING = {
             { ids: [686, 695, 705, 1088, 1106, 7641, 11659, 11660, 11661, 25307], name: "Shadow Bolt" },
             { ids: [1213167], name: "Incinerate" },
             { ids: [5676, 17919, 17920, 17921, 17922, 17923], name: "Searing Pain" },
-            { ids: [17877, 17927, 17928, 17929, 17930], name: "Shadowburn" },
+            { ids: [17877, 18867, 18868, 18869, 18870, 18871], name: "Shadowburn" },
             { ids: [17962, 18930, 18931, 18932], name: "Conflagrate" },
             { ids: [1454, 1455, 1456, 11687, 11688, 11689], name: "Life Tap" },
             { ids: [710, 18647], name: "Banish" },
@@ -428,7 +430,7 @@ export const CLASS_ABILITY_TRACKING = {
             { ids: [348, 707, 1094, 2941, 11665, 11667, 11668, 25309], name: "Immolate", duration: 15000, color: "#e67e22" },
             { ids: [172, 6222, 6223, 7648, 11671, 11672, 25311], name: "Corruption", duration: 18000, color: "#27ae60" },
             { ids: [1490, 11721, 11722], name: "Curse of the Elements", duration: 300000, color: "#9b59b6" },
-            { ids: [17937, 17938], name: "Curse of Shadow", duration: 300000, color: "#8e44ad" },
+            { ids: [17862, 17937], name: "Curse of Shadow", duration: 300000, color: "#8e44ad" },
             { ids: [704, 7658, 7659, 11717], name: "Curse of Recklessness", duration: 120000, color: "#e74c3c" },
         ]
     },
@@ -443,7 +445,7 @@ export const CLASS_ABILITY_TRACKING = {
             { ids: [172, 6222, 6223, 7648, 11671, 11672, 25311], name: "Corruption", duration: 18000, color: "#27ae60" },
             { ids: [980, 1014, 6215, 11711, 11712, 11713], name: "Curse of Agony", duration: 24000, color: "#d35400" },
             { ids: [1490, 11721, 11722], name: "Curse of the Elements", duration: 300000, color: "#9b59b6" },
-            { ids: [17937, 17938], name: "Curse of Shadow", duration: 300000, color: "#8e44ad" },
+            { ids: [17862, 17937], name: "Curse of Shadow", duration: 300000, color: "#8e44ad" },
             { ids: [704, 7658, 7659, 11717], name: "Curse of Recklessness", duration: 120000, color: "#e74c3c" },
         ]
     },
@@ -481,6 +483,8 @@ export const CLASS_ABILITY_TRACKING = {
             { ids: [5185, 5186, 5187, 5188, 5189, 6778, 8903, 9758, 9888, 9889, 25297], name: "Healing Touch" },
             { ids: [8936, 8938, 8939, 8940, 8941, 9750, 9856, 9857, 9858], name: "Regrowth" },
             { ids: [774, 1058, 1430, 2090, 2091, 3627, 8910, 9839, 9840, 9841, 25299], name: "Rejuvenation" },
+            { ids: [18562], name: "Swiftmend" },
+            { ids: [1213290], name: "Efflorescence" },
             { ids: [740, 8918, 9862, 9863], name: "Tranquility" },
         ],
         debuffs: [
@@ -525,7 +529,7 @@ const TRINKET_NAMES = new Set([
     "Slayer's Crest", "Jom Gabbar", "Kiss of the Spider", "Eye of Diminution",
     "Diamond Flask", "Earthstrike", "Badge of the Swarmguard",
     "Zandalarian Hero Charm", "Lifegiving Gem", "Styleen's Impeding Scarab",
-    "Abacus of Violent Odds", "Mark of the Champion", "Scarab Brooch",
+    "Mark of the Champion", "Scarab Brooch",
     "Loatheb's Reflection", "The Eye of the Dead",
 ]);
 

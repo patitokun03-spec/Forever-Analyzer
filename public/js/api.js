@@ -1,7 +1,7 @@
 // api.js — Backend API communication module for WoW Forever Log Analyzer
 // Handles audit log requests, DPS calculation, and Wowhead prefetching.
 
-import { state } from './state.js';
+import { state, resetStateForAudit } from './state.js';
 import { parseLogId, detectPlayerSpec } from './utils.js';
 import { renderFightsSidebar, renderPlayersSidebar } from './ui/sidebar.js';
 
@@ -16,11 +16,7 @@ export async function auditarLog() {
     const logId = parseLogId(rawInput) || (rawInput.toLowerCase() === 'demo' ? 'demo' : '');
     if (!logId) return;
 
-    state.currentLogId = logId;
-    state.detectedSpecs = {};
-    state.playerGearDB = {};
-    state.playerEnchantsForConsole = {};
-    state.processedPlayerCache = {};
+    resetStateForAudit(logId);
 
     // Immediately transition to app layout with loading overlay
     document.getElementById('landingStatus').innerHTML = '';

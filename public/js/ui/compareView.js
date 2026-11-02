@@ -1,5 +1,6 @@
 // public/js/ui/compareView.js
 // Side-by-side combat log comparison view for WoW Forever
+// NOTE: Currently inactive/deactivated in main.js until Compare UI button is added to index.html.
 
 import { state } from '../state.js';
 import { processPlayerData } from '../processor/index.js';

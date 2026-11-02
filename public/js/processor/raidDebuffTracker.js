@@ -1,8 +1,6 @@
 // public/js/processor/raidDebuffTracker.js
 // Processor for raid-wide boss debuffs and party/raid buffs across all players.
 
-import { SPELL_DB } from '../gameData.js';
-
 export const TRACKED_BOSS_DEBUFFS = [
     {
         name: "Sunder Armor",
@@ -41,7 +39,7 @@ export const TRACKED_BOSS_DEBUFFS = [
     },
     {
         name: "Curse of Shadow",
-        ids: [17937, 17938],
+        ids: [17862, 17937],
         icon: "spell_shadow_curseofachimonde",
         category: "Spell Vulnerability",
         color: "#8e44ad"
@@ -135,7 +133,7 @@ export const TRACKED_BOSS_DEBUFFS = [
 export const TRACKED_RAID_BUFFS = [
     {
         name: "Blessing of Might",
-        ids: [19740, 19834, 19835, 19836, 19837, 19838, 25782, 25916],
+        ids: [19740, 19834, 19835, 19836, 19837, 19838, 25291, 25782, 25916],
         icon: "spell_holy_fistofjustice",
         category: "Paladin Blessings"
     },
@@ -165,7 +163,7 @@ export const TRACKED_RAID_BUFFS = [
     },
     {
         name: "Leader of the Pack",
-        ids: [17007, 24932],
+        ids: [17007],
         icon: "spell_nature_unyeildingstamina",
         category: "Auras"
     },
@@ -189,7 +187,7 @@ export const TRACKED_RAID_BUFFS = [
     },
     {
         name: "Windfury Totem",
-        ids: [8512, 10613, 10614, 25587],
+        ids: [8512, 10613, 10614],
         icon: "spell_nature_windfury",
         category: "Shaman Totems"
     },

@@ -2,7 +2,7 @@ import { state } from '../state.js';
 import { formatDuration } from '../utils.js';
 import { processPlayerData } from '../processor/index.js';
 import { processRaidDebuffsAndBuffs } from '../processor/raidDebuffTracker.js';
-import { CLASSES, CLASS_COLORS, SPEC_ICONS, SPEC_ROLES, BUFF_DB, SPELL_DB, ENCHANT_DB, isTrinket, getSpellSortCategory, getPlayerRole } from '../gameData.js';
+import { CLASSES, SPEC_ICONS, BUFF_DB, SPELL_DB, ENCHANT_DB, getPlayerRole } from '../gameData.js';
 
 export function isPlayerInRole(filterRole, playerRole, playerClass, playerSpec) {
     if (!filterRole) return true;
@@ -39,11 +39,8 @@ export function renderAllPlayersView(fightId, fightEvents, allActors, fightInfo)
         const duration = fightInfo.endTime - fightInfo.startTime;
         fightTitle = `${fightInfo.name} — ${formatDuration(duration)}`;
     }
-    // Format boss slug for header
-    let bossSlug = (fightInfo && fightInfo.name) ? fightInfo.name.trim().replace(/'/g, '').replace(/[\s,-]+/g, '-').toLowerCase() : '';
-    bossSlug = bossSlug.replace(/-+$/, '');
-    const cacheBuster = Date.now();
-    let bossIconHtml = isOverall ? '' : `<img src="/images/targets/t-${bossSlug}.png?v=${cacheBuster}" style="height: 40px; vertical-align: middle; margin-right: 12px; border-radius: 6px;" onerror="this.src='/assets/icons/inv_misc_questionmark.jpg'; this.onerror=null;">`;
+    // Boss icon for encounter header
+    let bossIconHtml = isOverall ? '' : `<img src="/api/icon/inv_misc_head_dragon_01.jpg" style="height: 40px; vertical-align: middle; margin-right: 12px; border-radius: 6px; border: 1px solid rgba(244, 180, 0, 0.35);" onerror="this.src='/assets/icons/inv_misc_questionmark.jpg'; this.onerror=null;">`;
 
     // Calculate global max fights for the overall denominator
     let globalMaxFights = 1;

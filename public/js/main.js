@@ -9,9 +9,12 @@ import { renderMainContent, toggleAllViewFilter } from './ui/mainContent.js';
 import { 
     toggleGearInline, closeGearModal, toggleTimelineInline, 
     toggleCastsDebuffInline,
+    showWebhookForm, hideWebhookForm, saveWebhookProfile,
     sendToWebhookProfile, editWebhookProfile, deleteWebhookProfile, 
     enviarADiscord, closeDiscordModal 
 } from './ui/modals.js';
+// Inactive / future module (Compare View) - cleanly deactivated per architecture audit:
+/*
 import { 
     openCompareMode,
     exitCompareMode,
@@ -20,6 +23,7 @@ import {
     clearCompareLog, 
     updateCompareSelection 
 } from './ui/compareView.js';
+*/
 
 // === PAGE TRANSITIONS ===
 
@@ -65,6 +69,8 @@ function updateURL() {
         url.searchParams.delete('classes');
     }
 
+    // Compare Mode URL params (deactivated alongside compareView.js)
+    /*
     if (state.compareState && state.compareState.active) {
         url.searchParams.set('compare', 'true');
         if (state.compareLogB) url.searchParams.set('logB', state.compareLogB.logId);
@@ -80,6 +86,7 @@ function updateURL() {
         url.searchParams.delete('fightB');
         url.searchParams.delete('playerB');
     }
+    */
 
     window.history.pushState({}, '', url);
 }
@@ -185,17 +192,22 @@ window.toggleCastsDebuffInline = toggleCastsDebuffInline;
 // Discord
 window.enviarADiscord = enviarADiscord;
 window.closeDiscordModal = closeDiscordModal;
+window.showWebhookForm = showWebhookForm;
+window.hideWebhookForm = hideWebhookForm;
+window.saveWebhookProfile = saveWebhookProfile;
 window.sendToWebhookProfile = sendToWebhookProfile;
 window.editWebhookProfile = editWebhookProfile;
 window.deleteWebhookProfile = deleteWebhookProfile;
 
-// Compare
+// Compare (deactivated until Compare View UI trigger is enabled in index.html)
+/*
 window.openCompareMode = openCompareMode;
 window.exitCompareMode = exitCompareMode;
 window.loadCompareLog = loadCompareLog;
 window.useSameLogForCompare = useSameLogForCompare;
 window.clearCompareLog = clearCompareLog;
 window.updateCompareSelection = updateCompareSelection;
+*/
 window.updateURL = updateURL;
 
 // === INITIALIZATION ===

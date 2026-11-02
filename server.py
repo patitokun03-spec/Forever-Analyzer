@@ -64,7 +64,7 @@ def get_wcl_filter_spell_ids():
     special_ids = [
         # Resurrections & Externals
         20608, 20707, 20739, 20742, 20747, 20748, 20749, 20750, 20758,
-        20484, 50769, 21849, 21850,
+        20484, 21849, 21850,
         # Classic 60 Engineering Explosives
         13241,  # Goblin Sapper Charge
         13240,  # Goblin Sapper Charge (Cast)

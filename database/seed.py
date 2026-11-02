@@ -6,12 +6,18 @@ import sqlite3
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 DB_PATH = os.path.join(BASE_DIR, 'forever.sqlite')
+SCHEMA_PATH = os.path.join(BASE_DIR, 'database', 'schema.sql')
 SEED_DATA_PATH = os.path.join(BASE_DIR, 'database', 'seed_data.sql')
 
 def main():
     print(f'[Seed] Initializing SQLite database at: {DB_PATH}')
     conn = sqlite3.connect(DB_PATH)
     cursor = conn.cursor()
+
+    if os.path.exists(SCHEMA_PATH):
+        with open(SCHEMA_PATH, 'r', encoding='utf-8') as f:
+            schema_sql = f.read()
+        cursor.executescript(schema_sql)
 
     if os.path.exists(SEED_DATA_PATH):
         with open(SEED_DATA_PATH, 'r', encoding='utf-8') as f:

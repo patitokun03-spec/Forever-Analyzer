@@ -26,9 +26,9 @@ export function trackDeaths(fightEvents, player, ctx) {
             }
         }
 
-        const isRebirth = (ev.abilityGameID === 20484 || ev.abilityGameID === 20739 || ev.abilityGameID === 20742 || ev.abilityGameID === 20747 || ev.abilityGameID === 20748 || ev.abilityGameID === 26994);
+        const isRebirth = (ev.abilityGameID === 20484 || ev.abilityGameID === 20739 || ev.abilityGameID === 20742 || ev.abilityGameID === 20747 || ev.abilityGameID === 20748);
         const isAnkh = (ev.abilityGameID === 20608);
-        const isSoulstone = (ev.abilityGameID === 20707 || ev.abilityGameID === 20762 || ev.abilityGameID === 20749 || ev.abilityGameID === 20750 || ev.abilityGameID === 20758 || ev.abilityGameID === 27239);
+        const isSoulstone = (ev.abilityGameID === 20707 || ev.abilityGameID === 20762 || ev.abilityGameID === 20749 || ev.abilityGameID === 20750 || ev.abilityGameID === 20758);
 
         const playerIsTarget = (ev.targetID === player.id);
         const playerIsSource = (ev.sourceID === player.id);
